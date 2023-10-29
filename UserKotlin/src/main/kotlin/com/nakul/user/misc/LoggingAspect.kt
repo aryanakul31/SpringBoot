@@ -9,17 +9,18 @@ import org.springframework.stereotype.Component
 @Aspect
 @Component
 class LoggingAspect {
-    companion object{
-        private val LOGGER = LoggerFactory.getLogger(LoggingAspect::class.java)
-    }
-    @Before("execution(* com.nakul.user.service.UserServiceImpl..*(..))")
-    fun logBefore() {
-        LOGGER.warn("logBefore testing")
+    companion object {
+        val LOGGER = LoggerFactory.getLogger(LoggingAspect::class.java)
     }
 
-    @After("execution(* com.nakul.user.service.UserServiceImpl..*(..))")
+    @Before("execution(* com.nakul.user.service.user.UserServiceImpl..*(..))")
+    fun logBefore() {
+//        LOGGER.warn("logBefore testing")
+    }
+
+    @After("execution(* com.nakul.user.service.user.UserServiceImpl..*(..))")
     fun logAfter() {
-        LOGGER.warn("logAfter testing")
+//        LOGGER.warn("logAfter testing")
     }
 
 }

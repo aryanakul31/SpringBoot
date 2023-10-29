@@ -16,6 +16,8 @@ data class UserModel(
 
     @Column
     var password: String,
+    @Column
+    var token: String? = null,
 ) {
     override fun toString(): String {
         return "UserModel(id=$id, name='$name', email='$email', password='$password')"
