@@ -13,12 +13,12 @@ class LoggingAspect {
         val LOGGER = LoggerFactory.getLogger(LoggingAspect::class.java)
     }
 
-    @Before("execution(* com.nakul.user.service.user.UserServiceImpl..*(..))")
+    @Before("execution(* com.nakul.user.service.UserService..*(..))")
     fun logBefore() {
 //        LOGGER.warn("logBefore testing")
     }
 
-    @After("execution(* com.nakul.user.service.user.UserServiceImpl..*(..))")
+    @After("execution(* com.nakul.user.service.UserService..*(..))")
     fun logAfter() {
 //        LOGGER.warn("logAfter testing")
     }

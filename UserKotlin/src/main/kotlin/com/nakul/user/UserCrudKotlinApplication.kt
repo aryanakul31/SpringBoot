@@ -1,31 +1,29 @@
 package com.nakul.user
 
-//import com.nakul.user.secruity.AuthFilter
+import com.nakul.user.secruity.JwtFilter
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-//import org.springframework.context.annotation.Bean
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity
-//import org.springframework.security.web.SecurityFilterChain
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.context.annotation.Bean
+
 
 @SpringBootApplication
 class UserCrudKotlinApplication {
+    @Autowired
+    lateinit var beanFactory: AutowireCapableBeanFactory
 
-//    @Bean
-//    @Throws(java.lang.Exception::class)
-//    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-//        return http.authorizeHttpRequests {
-//            it.anyRequest().permitAll()
-//        }.build()
-//    }
-
-//    @Bean
-//    fun filterRegistrationBean(): FilterRegistrationBean<AuthFilter> {
-//        val registrationBean: FilterRegistrationBean<AuthFilter> = FilterRegistrationBean<AuthFilter>()
-//        val authFilter = AuthFilter()
-//        registrationBean.setFilter(authFilter)
-//        registrationBean.addUrlPatterns("/api/categories/*")
-//        return registrationBean
-//    }
+    @Bean
+    fun myFilter(): FilterRegistrationBean<JwtFilter> {
+        val registration = FilterRegistrationBean<JwtFilter>()
+        val myFilter = JwtFilter()
+        beanFactory.autowireBean(myFilter)
+        registration.filter = myFilter
+        registration.addUrlPatterns("/api/user/*")
+        registration.order = 1
+        return registration
+    }
 }
 
 fun main(args: Array<String>) {
