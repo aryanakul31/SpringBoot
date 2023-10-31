@@ -20,7 +20,7 @@ class UserCrudKotlinApplication {
         val myFilter = JwtFilter()
         beanFactory.autowireBean(myFilter)
         registration.filter = myFilter
-        registration.addUrlPatterns("/api/user/*")
+        registration.addUrlPatterns("/api/address")
         registration.order = 1
         return registration
     }

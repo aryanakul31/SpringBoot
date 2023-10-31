@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/SpringDemo
+    username: postgres
+    password: postgres
+
+  logging:
+    level:
+      root : warn
+    file: app.log

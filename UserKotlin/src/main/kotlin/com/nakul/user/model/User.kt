@@ -18,7 +18,10 @@ data class User(
 
     var password: String,
 
-    var token: String? = null,
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    val addresses: Set<Address>
+
 
 //    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
 //    @JoinTable(

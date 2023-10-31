@@ -29,7 +29,7 @@ class UserController {
 
     @DeleteMapping("/user/{id}")
     @Transactional
-    fun delete(@PathVariable id: Int): ResponseEntity<BaseResponse<User?>> = userService.delete(id)
+    fun delete(@PathVariable id: Int): ResponseEntity<BaseResponse<User>> = userService.delete(id)
 
 
     @PostMapping("/login")

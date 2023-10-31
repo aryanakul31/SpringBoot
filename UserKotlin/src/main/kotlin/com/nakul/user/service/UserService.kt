@@ -7,7 +7,6 @@ import com.nakul.user.exceptions.InvalidPasswordException
 import com.nakul.user.exceptions.UserNotFoundException
 import com.nakul.user.model.User
 import com.nakul.user.repo.UserRepo
-import com.nakul.user.secruity.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -63,20 +62,10 @@ class UserService {
         return ResponseEntity.ok(response)
     }
 
-    fun delete(id: Int?): ResponseEntity<BaseResponse<User?>> {
-        val response: BaseResponse<User?> = when {
-            id == null || userRepo.findById(id).getOrNull() == null -> {
-                throw UserNotFoundException()
-            }
-
-            else -> {
-                val user = userRepo.findById(id).getOrNull()
-                userRepo.deleteById(id)
-                BaseResponse(user)
-            }
-        }
-
-        return ResponseEntity.ok(response)
+    fun delete(id: Int): ResponseEntity<BaseResponse<User>> {
+        val user = userRepo.findById(id).get()
+        userRepo.deleteById(id)
+        return ResponseEntity.ok(BaseResponse(user))
     }
 
     fun login(email: String, password: String): ResponseEntity<BaseResponse<User?>> {
@@ -85,7 +74,7 @@ class UserService {
 
         when {
             user.password == password/*BCrypt.checkpw(password, user?.password)*/ -> {
-                user.token = JwtUtil.generateToken(user)
+//                user.token = JwtUtil.generateToken(user)
                 val response: BaseResponse<User?> = BaseResponse(user)
                 return ResponseEntity.ok(response)
             }
