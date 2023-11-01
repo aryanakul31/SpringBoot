@@ -12,6 +12,7 @@ object ResponseExceptionHandling {
 
     @ExceptionHandler
     fun handle(exception: Exception): ResponseEntity<BaseResponse<Nothing>> {
+        exception.printStackTrace()
         val httpResponse = when (exception) {
             is NoSuchElementException -> HttpStatus.NOT_FOUND
             is CustomException -> {

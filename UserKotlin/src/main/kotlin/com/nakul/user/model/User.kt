@@ -17,10 +17,11 @@ data class User(
     @Column(unique = true) var email: String,
 
     var password: String,
+    var token: String?,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    val addresses: Set<Address>
+    @JoinColumn(name = "userId")
+    val addresses: Set<Address> = setOf()
 
 
 //    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)

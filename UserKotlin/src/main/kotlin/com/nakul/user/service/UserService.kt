@@ -6,7 +6,9 @@ import com.nakul.user.exceptions.EmailAlreadyExistsException
 import com.nakul.user.exceptions.InvalidPasswordException
 import com.nakul.user.exceptions.UserNotFoundException
 import com.nakul.user.model.User
+import com.nakul.user.repo.AddressRepo
 import com.nakul.user.repo.UserRepo
+import com.nakul.user.secruity.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,6 +21,9 @@ class UserService {
     @Autowired
     private lateinit var userRepo: UserRepo
 
+    @Autowired
+    private lateinit var addressRepo: AddressRepo
+
 
     fun create(user: User): ResponseEntity<BaseResponse<User?>> {
         user.email = user.email.lowercase()
@@ -29,7 +34,6 @@ class UserService {
 
             else -> {
 //                user.myPassword = BCrypt.hashpw(user.password, BCrypt.gensalt())
-
                 val newUser = userRepo.save(user)
 
                 BaseResponse(
@@ -74,7 +78,7 @@ class UserService {
 
         when {
             user.password == password/*BCrypt.checkpw(password, user?.password)*/ -> {
-//                user.token = JwtUtil.generateToken(user)
+                user.token = JwtUtil.generateToken(user)
                 val response: BaseResponse<User?> = BaseResponse(user)
                 return ResponseEntity.ok(response)
             }

@@ -16,8 +16,9 @@ class JwtFilter : GenericFilterBean() {
         val httpServletRequest = p0 as HttpServletRequest
         val httpServletResponse = p1 as HttpServletResponse
 
-        val authToken = httpServletRequest.getHeader("Authorization")
         try {
+            val authToken = httpServletRequest.getHeader("Authorization")
+
             when {
                 authToken.isNullOrBlank() -> throw CustomException(HttpStatus.UNAUTHORIZED, "Token Missing")
                 authToken.contains("Bearer ") -> {
@@ -40,8 +41,8 @@ class JwtFilter : GenericFilterBean() {
                 else -> throw CustomException(HttpStatus.UNAUTHORIZED, "Token Invalid (Bearer Missing")
             }
         } catch (exception: CustomException) {
-            throw CustomException(HttpStatus.UNAUTHORIZED, "Token Missing")
-//            httpServletResponse.sendError(exception.httpStatus.value())
+//            throw CustomException(HttpStatus.UNAUTHORIZED, "Token Missing")
+            httpServletResponse.sendError(exception.httpStatus.value(), exception.errorMessage)
         }
     }
 }

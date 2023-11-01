@@ -5,10 +5,11 @@ import jakarta.persistence.*
 @Entity
 @Table
 data class Address(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int,
-    val name: String,
-    val lat: Double,
-    val long: Double,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Int = 0,
+    var name: String,
+    var lat: Double,
+    var long: Double,
+    var userId: Int,
 ) {
     override fun toString(): String {
         return "Address(id=$id, name='$name', lat=$lat, long=$long)"
