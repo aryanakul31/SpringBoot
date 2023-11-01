@@ -31,7 +31,7 @@ object ResponseExceptionHandling {
         val response = BaseResponse(
             response = null,
             status = httpResponse.value(),
-            message = httpResponse.reasonPhrase,
+            message = exception.localizedMessage,
         )
         return ResponseEntity(response, httpResponse)
     }
