@@ -1,4 +1,4 @@
-package com.nakul.user.model
+package com.nakul.user.entities
 
 import jakarta.persistence.*
 

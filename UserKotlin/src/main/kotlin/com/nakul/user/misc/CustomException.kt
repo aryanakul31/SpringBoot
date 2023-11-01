@@ -1,4 +1,4 @@
-package com.nakul.user.exceptions
+package com.nakul.user.misc
 
 import org.springframework.http.HttpStatus
 

@@ -1,7 +1,6 @@
 package com.nakul.user.repo
 
-import com.nakul.user.model.Address
-import com.nakul.user.model.User
+import com.nakul.user.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.*

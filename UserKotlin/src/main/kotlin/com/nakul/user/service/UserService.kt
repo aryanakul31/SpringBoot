@@ -1,12 +1,12 @@
 package com.nakul.user.service
 
 //import org.springframework.security.crypto.bcrypt.BCrypt
-import com.nakul.user.exceptions.EmailAlreadyExistsException
-import com.nakul.user.exceptions.InvalidPasswordException
-import com.nakul.user.exceptions.UserNotFoundException
-import com.nakul.user.model.User
+import com.nakul.user.misc.EmailAlreadyExistsException
+import com.nakul.user.misc.InvalidPasswordException
+import com.nakul.user.misc.UserNotFoundException
+import com.nakul.user.entities.User
 import com.nakul.user.repo.UserRepo
-import com.nakul.user.secruity.JwtUtil
+import com.nakul.user.security.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull

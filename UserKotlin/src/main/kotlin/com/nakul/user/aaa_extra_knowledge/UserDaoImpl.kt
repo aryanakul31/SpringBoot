@@ -1,4 +1,4 @@
-package com.nakul.user.misc
+package com.nakul.user.aaa_extra_knowledge
 
 //@Repository
 //class UserDaoImpl : UserDao {

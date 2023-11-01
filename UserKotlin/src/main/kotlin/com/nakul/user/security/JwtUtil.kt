@@ -1,6 +1,6 @@
-package com.nakul.user.secruity
+package com.nakul.user.security
 
-import com.nakul.user.model.User
+import com.nakul.user.entities.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -11,8 +11,8 @@ import java.util.*
 
 
 object JwtUtil {
-    private var VALIDITY: Int = 3 * 24 * 60 * 60 * 1_000 //3Days
-    private var SECRET: String = "ededwedwwpolfePtbEadRzVlewewf2323ferferf2323"
+    private const val VALIDITY: Int = 3 * 24 * 60 * 60 * 1_000 //3Days
+    private const val SECRET: String = "ededwedwwpolfePtbEadRzVlewewf2323ferferf2323"
 
     fun checkToken(token: String): Claims {
         return Jwts.parserBuilder().setSigningKey(signKey).build().parseClaimsJws(token).body

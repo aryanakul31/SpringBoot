@@ -1,6 +1,6 @@
 package com.nakul.user.controller
 
-import com.nakul.user.model.Address
+import com.nakul.user.entities.Address
 import com.nakul.user.service.AddressService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired

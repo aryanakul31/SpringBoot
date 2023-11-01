@@ -1,6 +1,6 @@
 package com.nakul.user
 
-import com.nakul.user.secruity.JwtFilter
+import com.nakul.user.security.JwtFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication

@@ -1,6 +1,6 @@
 package com.nakul.user.controller
 
-import com.nakul.user.model.User
+import com.nakul.user.entities.User
 import com.nakul.user.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional

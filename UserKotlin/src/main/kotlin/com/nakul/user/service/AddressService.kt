@@ -1,6 +1,6 @@
 package com.nakul.user.service
 
-import com.nakul.user.model.Address
+import com.nakul.user.entities.Address
 import com.nakul.user.repo.AddressRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

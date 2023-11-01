@@ -1,6 +1,6 @@
-package com.nakul.user.secruity
+package com.nakul.user.security
 
-import com.nakul.user.exceptions.CustomException
+import com.nakul.user.misc.CustomException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
