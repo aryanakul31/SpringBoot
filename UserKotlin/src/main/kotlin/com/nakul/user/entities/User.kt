@@ -17,7 +17,6 @@ data class User(
     @Column(unique = true) var email: String,
 
     var password: String,
-    var token: String?,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "userId")

@@ -1,5 +1,6 @@
 package com.nakul.user.controller
 
+import com.nakul.user.dto.UserDTO
 import com.nakul.user.entities.User
 import com.nakul.user.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,7 +33,7 @@ class UserController {
 
     @PostMapping("/login")
     @Transactional
-    fun login(@RequestBody requestData: Map<String, Any>): User {
+    fun login(@RequestBody requestData: Map<String, Any>): UserDTO? {
         val email = requestData["email"] as String
         val password = requestData["password"] as String
         return userService.login(email, password)

@@ -1,12 +1,14 @@
 package com.nakul.user.service
 
 //import org.springframework.security.crypto.bcrypt.BCrypt
+import com.nakul.user.dto.UserDTO
+import com.nakul.user.entities.User
 import com.nakul.user.misc.EmailAlreadyExistsException
 import com.nakul.user.misc.InvalidPasswordException
 import com.nakul.user.misc.UserNotFoundException
-import com.nakul.user.entities.User
 import com.nakul.user.repo.UserRepo
 import com.nakul.user.security.JwtUtil
+import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -52,13 +54,15 @@ class UserService {
         return user
     }
 
-    fun login(email: String, password: String): User {
+    fun login(email: String, password: String): UserDTO? {
         val user = userRepo.findByEmail(email).getOrNull() ?: throw UserNotFoundException()
 
         when {
             user.password == password/*BCrypt.checkpw(password, user?.password)*/ -> {
-                user.token = JwtUtil.generateToken(user)
-                return user
+                val mapper = ModelMapper()
+                val data = mapper.map(user, UserDTO::class.java)
+                data.token = JwtUtil.generateToken(user)
+                return data
             }
 
             else -> throw InvalidPasswordException()
