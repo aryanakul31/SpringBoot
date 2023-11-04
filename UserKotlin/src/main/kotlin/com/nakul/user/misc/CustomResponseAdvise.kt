@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
+import org.springframework.validation.FieldError
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestController
@@ -18,9 +20,26 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 class CustomResponseAdvise : ResponseBodyAdvice<Any> {
 
     @ExceptionHandler
-    fun handle(exception: Exception): ResponseEntity<BaseResponse<Nothing>> {
+    fun handle(exception: Exception): ResponseEntity<BaseResponse<*>> {
         exception.printStackTrace()
         val httpResponse = when (exception) {
+            is MethodArgumentNotValidException -> {
+                val errors: MutableMap<String, String?> = HashMap()
+                exception.bindingResult.allErrors.forEach { error ->
+                    val fieldName = (error as FieldError).field
+                    val message = error.getDefaultMessage()
+                    errors[fieldName] = message
+                }
+
+                val response = BaseResponse(
+                    response = errors,//(exception.bindingResult.allErrors[0] as FieldError).field,
+                    status = HttpStatus.BAD_REQUEST.value(),
+                    message = "",
+                )
+
+                return ResponseEntity(response, HttpStatus.BAD_REQUEST)
+            }
+
             is NoSuchElementException -> HttpStatus.NOT_FOUND
             is CustomException -> {
                 val response = BaseResponse(
@@ -38,7 +57,7 @@ class CustomResponseAdvise : ResponseBodyAdvice<Any> {
         val response = BaseResponse(
             response = null,
             status = httpResponse.value(),
-            message = exception.localizedMessage,
+            message = exception.localizedMessage ?: exception.message ?: "",
         )
         return ResponseEntity(response, httpResponse)
     }

@@ -26,8 +26,8 @@ class JwtFilter : GenericFilterBean() {
                         val token = authToken.split("Bearer ")[1]
                         val data = JwtUtil.checkToken(token)
 
-                        httpServletRequest.setAttribute("userId", data["id"].toString())
-//                        val user = userRepo.findById(userId)
+                        httpServletRequest.setAttribute("user", data["id"].toString())
+//                        val user = userRepo.findById(user)
 //                            .get() // new User(jwtUtil.extractUsername(jwt), jwtUtil.extractUserId(jwt));L
 //                        val final = UsernamePasswordAuthenticationToken(user, token, user.authorities)
 //                        SecurityContextHolder.getContext().authentication = final

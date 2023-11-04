@@ -22,7 +22,7 @@ object JwtUtil {
         val tokenValidity = VALIDITY // = env["JWT.VALIDITY"]?.toInt() ?: 0
         val time = System.currentTimeMillis()
         return Jwts.builder()
-            .claim("id", userModel.id)
+            .claim("id", userModel.userId)
             .setIssuedAt(Date(time))
             .setExpiration(Date(time + tokenValidity))
             .signWith(signKey, SignatureAlgorithm.HS256)

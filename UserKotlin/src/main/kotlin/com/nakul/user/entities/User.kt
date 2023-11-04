@@ -1,5 +1,6 @@
 package com.nakul.user.entities
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 //import org.springframework.security.core.GrantedAuthority
@@ -10,17 +11,23 @@ import jakarta.persistence.*
 @Entity
 @Table
 data class User(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Int,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val userId: Int = 0,
 
-    val name: String,
+    var name: String?,
 
-    @Column(unique = true) var email: String,
+    @Column(unique = true)
+    var email: String?,
 
-    var password: String,
+    var password: String?,
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "userId")
-    val addresses: Set<Address> = setOf()
+   // @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+//    @JoinColumn(name = "user")
+//    val addresses: Set<Address> = setOf(),
+
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "userId")
+    var address: Set<Address> = HashSet()
 
 
 //    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
@@ -32,7 +39,7 @@ data class User(
 //    var roles: HashSet<Role> = hashSetOf()
 ) {
     override fun toString(): String {
-        return "UserModel(id=$id, name='$name', email='$email', password='$password')"
+        return "User(user=$userId, name='$name', email='$email', password='$password', addresses=$address)"
     }
 }
 //    : UserDetails {
