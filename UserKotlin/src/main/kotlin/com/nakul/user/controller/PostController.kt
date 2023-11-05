@@ -35,7 +35,12 @@ class PostController {
         httpRequest: HttpServletRequest, @PathVariable("id") addressId: Int, @RequestBody postRequestDTO: PostRequestDTO
     ): PostResponseDTO {
         val userId = (httpRequest.getAttribute("user") as String).toInt()
-        return postService.update(userId = userId, postId = addressId, postRequestDTO = postRequestDTO)
+        return postService.update(
+            userId = userId,
+            postId = addressId,
+            postRequestDTO = postRequestDTO
+
+        )
     }
 
     @PostMapping("")
@@ -56,6 +61,5 @@ class PostController {
         val user = (httpRequest.getAttribute("user") as String).toInt()
         return postService.delete(user = user, addressId = addressId)
     }
-
 
 }

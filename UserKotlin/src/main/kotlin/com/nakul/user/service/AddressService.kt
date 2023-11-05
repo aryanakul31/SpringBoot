@@ -4,7 +4,6 @@ import com.nakul.user.dto.request.AddressRequestDTO
 import com.nakul.user.dto.response.AddressResponseDTO
 import com.nakul.user.entities.Address
 import com.nakul.user.repo.AddressRepo
-import com.nakul.user.repo.UserRepo
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -15,12 +14,11 @@ class AddressService {
     @Autowired
     private lateinit var addressRepo: AddressRepo
 
-    @Autowired
-    private lateinit var userRepo: UserRepo
-
 
     fun read(userId: Int): List<AddressResponseDTO> {
-        return addressRepo.findByUserId(id = userId).map { it.getMap() }
+        return addressRepo.findByUserId(id = userId).map {
+            it.getMap()
+        }
     }
 
     fun read(userId: Int, id: Int): AddressResponseDTO {
@@ -64,9 +62,10 @@ class AddressService {
         return address.getMap()
     }
 
+    @Autowired
+    private lateinit var mapper: ModelMapper
 
     fun Address.getMap(): AddressResponseDTO {
-        val mapper = ModelMapper()
         val response = mapper.map(this, AddressResponseDTO::class.java)
         return response
     }

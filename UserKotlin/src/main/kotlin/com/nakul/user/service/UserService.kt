@@ -8,7 +8,6 @@ import com.nakul.user.entities.User
 import com.nakul.user.misc.EmailAlreadyExistsException
 import com.nakul.user.misc.InvalidPasswordException
 import com.nakul.user.misc.UserNotFoundException
-import com.nakul.user.repo.AddressRepo
 import com.nakul.user.repo.UserRepo
 import com.nakul.user.security.JwtUtil
 import org.modelmapper.ModelMapper
@@ -34,15 +33,17 @@ class UserService {
             email = createUserDTO.email.lowercase(),
             password = createUserDTO.password, //BCrypt.hashpw(createUserDTO.password, BCrypt.gensalt())
         )
-        return userRepo.save(user).getDto(true)
+        return userRepo.save(user).getMap(true)
     }
 
     fun read(): List<UserResponseDTO> {
-        return userRepo.findAll().map { it.getDto() }
+        return userRepo.findAll().map {
+            it.getMap()
+        }
     }
 
     fun read(userId: Int): UserResponseDTO {
-        return userRepo.findById(userId).getOrNull()?.getDto() ?: throw NoSuchElementException()
+        return userRepo.findById(userId).getOrNull()?.getMap() ?: throw NoSuchElementException()
     }
 
 
@@ -53,14 +54,13 @@ class UserService {
         if (createUserDTO.name.isNotBlank()) user.name = createUserDTO.name
 
 
-        userRepo.save(user)
-        return user.getDto()
+        return userRepo.save(user).getMap()
     }
 
     fun delete(id: Int): UserResponseDTO {
         val user = userRepo.findById(id).get()
         userRepo.deleteById(id)
-        return user.getDto()
+        return user.getMap()
     }
 
     fun login(loginDTO: LoginRequestDTO): UserResponseDTO {
@@ -68,23 +68,25 @@ class UserService {
 
         when {
             user.password == loginDTO.password/*BCrypt.checkpw(password, user?.password)*/ -> {
-                return user.getDto(true)
+                return user.getMap()
             }
 
             else -> throw InvalidPasswordException()
         }
     }
 
+    @Autowired
+    private lateinit var mapper: ModelMapper
 
     @Autowired
-    lateinit var addressRepo: AddressRepo
+    private lateinit var addressService: AddressService
 
-    fun User.getDto(token: Boolean = false): UserResponseDTO {
-        val mapper = ModelMapper()
+    fun User.getMap(token: Boolean = false): UserResponseDTO {
         val data = mapper.map(this, UserResponseDTO::class.java)
         if (token) data.token = JwtUtil.generateToken(this)
 
-        data.addresses = addressRepo.findByUserId(userId).toSet()
+        data.addresses = addressService.read(userId)
+
         return data
     }
 }

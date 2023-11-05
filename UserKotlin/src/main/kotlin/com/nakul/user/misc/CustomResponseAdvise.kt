@@ -77,6 +77,7 @@ class CustomResponseAdvise : ResponseBodyAdvice<Any> {
         if (returnType.method?.isAnnotationPresent(IgnoreResponseBinding::class.java) == true) return body
 
 
+
         return BaseResponse(response = body)
     }
 

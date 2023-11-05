@@ -1,6 +1,7 @@
 package com.nakul.user
 
 import com.nakul.user.security.JwtFilter
+import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -13,6 +14,11 @@ import org.springframework.context.annotation.Bean
 class UserCrudKotlinApplication {
     @Autowired
     lateinit var beanFactory: AutowireCapableBeanFactory
+
+    @Bean
+    fun myMapper(): ModelMapper {
+        return ModelMapper()
+    }
 
     @Bean
     fun myFilter(): FilterRegistrationBean<JwtFilter> {

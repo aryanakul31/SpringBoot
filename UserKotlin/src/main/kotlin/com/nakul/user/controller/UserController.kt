@@ -45,5 +45,4 @@ class UserController {
         return userService.create(createUserDTO)
     }
 
-
 }

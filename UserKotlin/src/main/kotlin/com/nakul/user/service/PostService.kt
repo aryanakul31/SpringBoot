@@ -7,7 +7,6 @@ import com.nakul.user.repo.PostRepo
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import kotlin.jvm.optionals.getOrNull
 
 @Service
 class PostService {
@@ -16,19 +15,17 @@ class PostService {
     private lateinit var postRepo: PostRepo
 
     fun read(userId: Int, isMine: Boolean): List<PostResponseDTO> {
-        return if (isMine)
-            postRepo.findByUserId(userId).map { it.getMap() }
-        else
-            postRepo.findAll().map { it.getMap() }
+        return if (isMine) postRepo.findByUserId(userId).map {
+            it.getMap()
+        }
+        else postRepo.findAll().map {
+            it.getMap()
+        }
     }
 
     fun read(userId: Int, postId: Int, isMine: Boolean): PostResponseDTO {
-        return if (isMine)
-            postRepo.findByPostIdAndUserId(postId = postId, userId = userId)?.getMap() ?: throw NoSuchElementException()
-        else
-            postRepo.findById(postId).getOrNull()?.getMap()?.apply {
-//            comment = comment.filter { it.commentId == null }.toSet()
-            } ?: throw NoSuchElementException()
+        return if (isMine) postRepo.findByPostIdAndUserId(postId = postId, userId = userId).getMap()
+        else postRepo.findById(postId).get().getMap()
     }
 
     fun save(userId: Int, postRequestDTO: PostRequestDTO): PostResponseDTO {
@@ -41,7 +38,7 @@ class PostService {
     }
 
     fun update(userId: Int, postId: Int, postRequestDTO: PostRequestDTO): PostResponseDTO {
-        val post = postRepo.findByPostIdAndUserId(postId = postId, userId = userId) ?: throw NoSuchElementException()
+        val post = postRepo.findByPostIdAndUserId(postId = postId, userId = userId)
 
         if (postRequestDTO.title.isNotBlank()) post.title = postRequestDTO.title
         if (postRequestDTO.description.isNotBlank()) post.description = postRequestDTO.description
@@ -51,16 +48,21 @@ class PostService {
     }
 
     fun delete(user: Int, addressId: Int): PostResponseDTO {
-        val post = postRepo.findByPostIdAndUserId(postId = addressId, userId = user) ?: throw NoSuchElementException()
+        val post = postRepo.findByPostIdAndUserId(postId = addressId, userId = user)
         postRepo.deleteById(post.postId)
         return post.getMap()
     }
 
+    @Autowired
+    private lateinit var mapper: ModelMapper
+
+    @Autowired
+    private lateinit var postReactionService: PostReactionService
+
     fun Post.getMap(): PostResponseDTO {
-        val mapper = ModelMapper()
         val data = mapper.map(this, PostResponseDTO::class.java)
-//todo
-//        data.reaction = addressRepo.findByUserId(userId).toSet()
+        data.comments = postReactionService.getComments(postId = postId)
+        data.likes = postReactionService.getLikes(postId = postId)
         return data
     }
 }

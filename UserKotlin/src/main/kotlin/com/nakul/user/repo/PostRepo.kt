@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PostRepo : JpaRepository<Post, Int> {
     fun findByUserId(userId: Int): List<Post>
-    fun findByPostIdAndUserId(postId:Int,userId: Int): Post?
+    fun findByPostIdAndUserId(postId: Int, userId: Int): Post
 
 }

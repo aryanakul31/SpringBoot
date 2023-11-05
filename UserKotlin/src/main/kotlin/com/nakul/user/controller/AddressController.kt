@@ -20,13 +20,15 @@ class AddressController {
     @GetMapping("")
     fun getAddress(httpRequest: HttpServletRequest): List<AddressResponseDTO> {
         val userId = (httpRequest.getAttribute("user") as String).toInt()
-        return addressService.read(userId = userId)
+        return addressService.read(userId = userId).map {
+            (it)
+        }
     }
 
     @GetMapping("/{id}")
     fun getAddressById(httpRequest: HttpServletRequest, @PathVariable("id") addressId: Int): AddressResponseDTO {
         val userId = (httpRequest.getAttribute("user") as String).toInt()
-        return addressService.read(userId = userId, id = addressId)
+        return (addressService.read(userId = userId, id = addressId))
     }
 
     @PutMapping("/{id}")
@@ -36,7 +38,13 @@ class AddressController {
         @RequestBody addressRequestDTO: AddressRequestDTO,
     ): AddressResponseDTO {
         val userId = (httpRequest.getAttribute("user") as String).toInt()
-        return addressService.update(userId = userId, addressId = addressId, addressRequestDTO = addressRequestDTO)
+        return (
+                addressService.update(
+                    userId = userId,
+                    addressId = addressId,
+                    addressRequestDTO = addressRequestDTO
+                )
+                )
     }
 
     @PostMapping("")
@@ -46,7 +54,7 @@ class AddressController {
         @Valid @RequestBody addressRequestDTO: AddressRequestDTO
     ): AddressResponseDTO {
         val userId = (httpRequest.getAttribute("user") as String).toInt()
-        return addressService.save(userId = userId, addressRequestDTO = addressRequestDTO)
+        return (addressService.save(userId = userId, addressRequestDTO = addressRequestDTO))
     }
 
 
@@ -56,8 +64,7 @@ class AddressController {
         httpRequest: HttpServletRequest, @PathVariable("id") addressId: Int
     ): AddressResponseDTO {
         val userId = (httpRequest.getAttribute("user") as String).toInt()
-        return addressService.delete(userId = userId, addressId = addressId)
+        return (addressService.delete(userId = userId, addressId = addressId))
     }
-
 
 }

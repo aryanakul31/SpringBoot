@@ -7,7 +7,7 @@ import jakarta.persistence.*
 @Table
 data class PostReaction(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val reactionId: Int = 0,
+    val postReactionId: Int = 0,
 
     var userId: Int,
     var postId: Int,
@@ -15,6 +15,6 @@ data class PostReaction(
     var isLiked: Boolean = false,
 ) {
     override fun toString(): String {
-        return "PostReaction(reactionId=$reactionId, userId=$userId, postId=$postId, comment=$comment, isLiked=$isLiked)"
+        return "PostReaction(postReactionId=$postReactionId, userId=$userId, postId=$postId, comment=$comment, isLiked=$isLiked)"
     }
 }
