@@ -1,18 +1,21 @@
 package com.nakul.user.dto.request
 
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 
 data class AddressRequestDTO(
     @field:NotBlank(message = "Empty Name")
-    val name: String = "",
+    @field:NotNull(message = "Blank Name")
+    val name: String? = null,
 
-    @field:NotBlank(message = "Empty Description")
-    val description: String = "",
+    @field:NotBlank(message = "Blank Description")
+    @field:NotEmpty(message = "Empty Description")
+    val description: String? = null,
 
     @field:NotNull(message = "Empty latitude")
-    val lat: Double ?=0.0,
+    val lat: Double? = null,
 
     @field:NotNull(message = "Empty long")
-    val long: Double ?=0.0
+    val long: Double? = null,
 )

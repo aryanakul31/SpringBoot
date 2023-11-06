@@ -7,17 +7,14 @@ import com.nakul.user.dto.response.UserResponseDTO
 import com.nakul.user.entities.User
 import com.nakul.user.misc.EmailAlreadyExistsException
 import com.nakul.user.misc.InvalidPasswordException
-import com.nakul.user.misc.UserNotFoundException
 import com.nakul.user.repo.UserRepo
 import com.nakul.user.security.JwtUtil
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.validation.annotation.Validated
 import kotlin.jvm.optionals.getOrNull
 
 @Service
-@Validated
 class UserService {
 
     @Autowired
@@ -37,22 +34,22 @@ class UserService {
     }
 
     fun read(): List<UserResponseDTO> {
-        return userRepo.findAll().map {
+        val userList = userRepo.findAll()
+        return userList.map {
             it.getMap()
         }
     }
 
     fun read(userId: Int): UserResponseDTO {
-        return userRepo.findById(userId).getOrNull()?.getMap() ?: throw NoSuchElementException()
+        return userRepo.findById(userId).get().getMap()
     }
 
 
     fun update(userId: Int, createUserDTO: CreateUserRequestDTO): UserResponseDTO {
-        val user = userRepo.findById(userId).getOrNull() ?: throw UserNotFoundException()
+        val user = userRepo.findById(userId).get()
         if (createUserDTO.email.isNotBlank()) user.email = createUserDTO.email.lowercase()
         if (createUserDTO.password.isNotBlank()) user.password = createUserDTO.password
         if (createUserDTO.name.isNotBlank()) user.name = createUserDTO.name
-
 
         return userRepo.save(user).getMap()
     }
@@ -64,11 +61,11 @@ class UserService {
     }
 
     fun login(loginDTO: LoginRequestDTO): UserResponseDTO {
-        val user = userRepo.findByEmail(loginDTO.email).getOrNull() ?: throw UserNotFoundException()
+        val user = userRepo.findByEmail(loginDTO.email).get()
 
         when {
             user.password == loginDTO.password/*BCrypt.checkpw(password, user?.password)*/ -> {
-                return user.getMap()
+                return user.getMap(true)
             }
 
             else -> throw InvalidPasswordException()

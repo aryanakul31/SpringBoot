@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PostRepo : JpaRepository<Post, Int> {
-    fun findByUserId(userId: Int): List<Post>
-    fun findByPostIdAndUserId(postId: Int, userId: Int): Post
+    fun findByUser_UserId(userId: Int): List<Post>
+
+    fun findByPostIdAndUser_UserId(postId: Int, userId: Int): Post
 
 }

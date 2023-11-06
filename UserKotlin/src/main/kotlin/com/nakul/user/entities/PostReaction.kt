@@ -9,12 +9,13 @@ data class PostReaction(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val postReactionId: Int = 0,
 
-    var userId: Int,
-    var postId: Int,
     var comment: String? = null,
-    var isLiked: Boolean = false,
+
+    @ManyToOne @JoinColumn(name = "post_fk") var post: Post,
+
+    @ManyToOne @JoinColumn(name = "user_fk") var user: User,
 ) {
     override fun toString(): String {
-        return "PostReaction(postReactionId=$postReactionId, userId=$userId, postId=$postId, comment=$comment, isLiked=$isLiked)"
+        return "PostReaction(postReactionId=$postReactionId, comment=$comment, post=$post, user=$user)"
     }
 }

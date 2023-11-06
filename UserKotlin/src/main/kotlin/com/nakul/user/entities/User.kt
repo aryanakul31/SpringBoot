@@ -1,6 +1,5 @@
 package com.nakul.user.entities
 
-import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 //import org.springframework.security.core.GrantedAuthority
@@ -21,13 +20,8 @@ data class User(
 
     var password: String?,
 
-   // @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-//    @JoinColumn(name = "user")
-//    val addresses: Set<Address> = setOf(),
-
-    @JsonManagedReference
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "userId")
-    var address: Set<Address> = HashSet()
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
+    val addresses: Set<Address> = setOf(),
 
 
 //    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
@@ -39,7 +33,7 @@ data class User(
 //    var roles: HashSet<Role> = hashSetOf()
 ) {
     override fun toString(): String {
-        return "User(user=$userId, name='$name', email='$email', password='$password', addresses=$address)"
+        return "User(user=$userId, name='$name', email='$email', password='$password', addresses=$addresses)"
     }
 }
 //    : UserDetails {

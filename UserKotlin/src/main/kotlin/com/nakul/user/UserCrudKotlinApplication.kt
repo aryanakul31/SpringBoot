@@ -2,6 +2,7 @@ package com.nakul.user
 
 import com.nakul.user.security.JwtFilter
 import org.modelmapper.ModelMapper
+import org.modelmapper.convention.MatchingStrategies
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -17,6 +18,9 @@ class UserCrudKotlinApplication {
 
     @Bean
     fun myMapper(): ModelMapper {
+        val modelMapper = ModelMapper().apply {
+            configuration.setMatchingStrategy(MatchingStrategies.STRICT)
+        }
         return ModelMapper()
     }
 

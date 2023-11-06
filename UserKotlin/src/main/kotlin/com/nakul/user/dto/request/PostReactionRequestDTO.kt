@@ -1,6 +1,12 @@
 package com.nakul.user.dto.request
 
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+
 data class PostReactionRequestDTO(
-    val isLiked: Boolean = false,
-    val comment: String? = null,
-)
+
+    @field:NotNull(message = "Empty Comment")
+    @field:NotBlank(message = "Blank Comment")
+    var comment: String? = null,
+
+    )

@@ -10,17 +10,13 @@ data class Address(
 
     @Column(unique = true)
     var name: String?,
-    var description: String?=null,
+    var description: String? = null,
     var lat: Double?,
     var long: Double?,
 
-//TODO (Foreign Key Constraint)
-    var userId: Int?,
-
-//    @ManyToOne
-//    @JsonBackReference
-//    @JoinColumn(name = "user_id")
-//    var user: User? = null
+    @ManyToOne
+    @JoinColumn(name = "user_fk")
+    var user: User,
 ) {
     override fun toString(): String {
         return "Address(addressId=$addressId, name='$name', lat=$lat, long=$long)"
